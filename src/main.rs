@@ -1,3 +1,5 @@
+mod process_info;
+
 fn main() {
-    println!("Hello, world!");
+    println!("ccpclean");
 }
