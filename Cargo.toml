@@ -1,0 +1,24 @@
+[package]
+name = "ccpclean"
+version = "0.1.0"
+edition = "2021"
+description = "Scan and clean up orphaned local web service processes"
+license = "MIT"
+repository = "https://github.com/YOUR_USERNAME/ccpclean"
+keywords = ["process", "cli", "tui", "devtools", "cleanup"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "ccpclean"
+path = "src/main.rs"
+
+[dependencies]
+sysinfo = "0.32"
+netstat2 = "0.10"
+ratatui = "0.29"
+crossterm = "0.28"
+clap = { version = "4", features = ["derive"] }
+
+[profile.release]
+strip = true
+opt-level = 3
