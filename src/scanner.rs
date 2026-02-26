@@ -1,10 +1,12 @@
 use std::collections::HashMap;
 use sysinfo::System;
-use netstat2::{get_sockets_info, AddressFamilyFlags, ProtocolFlags, ProtocolSocketInfo};
 use crate::process_info::ProcessInfo;
 use crate::filter::is_dev_runtime;
 
+#[cfg(not(target_os = "macos"))]
 fn build_port_map() -> HashMap<u32, Vec<u16>> {
+    use netstat2::{get_sockets_info, AddressFamilyFlags, ProtocolFlags, ProtocolSocketInfo};
+
     let mut map: HashMap<u32, Vec<u16>> = HashMap::new();
 
     let af_flags = AddressFamilyFlags::IPV4 | AddressFamilyFlags::IPV6;
@@ -18,6 +20,38 @@ fn build_port_map() -> HashMap<u32, Vec<u16>> {
                     let port = tcp.local_port;
                     for pid in &si.associated_pids {
                         map.entry(*pid).or_default().push(port);
+                    }
+                }
+            }
+        }
+    }
+
+    map
+}
+
+#[cfg(target_os = "macos")]
+fn build_port_map() -> HashMap<u32, Vec<u16>> {
+    use std::process::Command;
+
+    let mut map: HashMap<u32, Vec<u16>> = HashMap::new();
+
+    let output = Command::new("lsof")
+        .args(["-iTCP", "-sTCP:LISTEN", "-nP", "-F", "pn"])
+        .output();
+
+    if let Ok(output) = output {
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let mut current_pid: Option<u32> = None;
+
+        for line in stdout.lines() {
+            if let Some(pid_str) = line.strip_prefix('p') {
+                current_pid = pid_str.parse().ok();
+            } else if let Some(name) = line.strip_prefix('n') {
+                if let Some(pid) = current_pid {
+                    if let Some(port_str) = name.rsplit(':').next() {
+                        if let Ok(port) = port_str.parse::<u16>() {
+                            map.entry(pid).or_default().push(port);
+                        }
                     }
                 }
             }
