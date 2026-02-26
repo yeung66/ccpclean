@@ -28,8 +28,8 @@ fn render_process_list(f: &mut Frame, area: Rect, state: &AppState) {
         .collect();
 
     let mode_str = match state.filter_mode {
-        FilterMode::Strict => "Strict",
-        FilterMode::Loose => "Loose",
+        FilterMode::Strict => "Strict: dev only",
+        FilterMode::Loose => "Loose: all",
     };
 
     let list = List::new(items)

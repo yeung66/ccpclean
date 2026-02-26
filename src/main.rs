@@ -27,9 +27,6 @@ fn main() {
         p.score = compute_score(p);
     }
 
-    // Apply filter
-    let mut processes = apply_filter(processes, mode);
-
     // Apply port filter if specified
     if let Some(port) = cli.port {
         processes.retain(|p| p.ports.contains(&port));
@@ -39,30 +36,40 @@ fn main() {
     processes.sort_by(|a, b| b.score.cmp(&a.score));
 
     if cli.no_tui {
-        // Non-interactive output
-        println!("{:<8} {:<12} {:<18} {:<7} {}", "PID", "NAME", "PORTS", "SCORE", "COMMAND");
-        println!("{}", "-".repeat(70));
-        for p in &processes {
-            let cmd = p.cmd.get(1).map(|s| s.as_str()).unwrap_or("");
-            println!(
-                "{:<8} {:<12} {:<18} {:<7} {}",
-                p.pid,
-                p.name,
-                p.ports_display(),
-                p.score,
-                cmd
-            );
+        let filtered = apply_filter(processes, mode);
+        if filtered.is_empty() {
+            println!("No matching processes found.");
+            println!();
+            println!("Tip: try `ccpclean --all --no-tui` to show all processes listening on local ports,");
+            println!("     or `ccpclean --port <PORT> --no-tui` to filter by a specific port.");
+        } else {
+            println!("{:<8} {:<12} {:<18} {:<7} {}", "PID", "NAME", "PORTS", "SCORE", "COMMAND");
+            println!("{}", "-".repeat(70));
+            for p in &filtered {
+                let cmd = p.cmd.get(1).map(|s| s.as_str()).unwrap_or("");
+                println!(
+                    "{:<8} {:<12} {:<18} {:<7} {}",
+                    p.pid,
+                    p.name,
+                    p.ports_display(),
+                    p.score,
+                    cmd
+                );
+            }
         }
         return;
     }
 
-    if processes.is_empty() {
-        println!("No matching processes found.");
-        return;
-    }
-
+    // Always open TUI — user can switch filter mode with F
     let mut state = AppState::new(processes);
     state.filter_mode = mode;
+    state.refilter();
+
+    if state.processes.is_empty() {
+        state.status_message = Some(
+            " No dev runtime processes found. Press F to switch to loose mode and see all.".to_string()
+        );
+    }
 
     if let Err(e) = runner::run(state) {
         eprintln!("TUI error: {}", e);

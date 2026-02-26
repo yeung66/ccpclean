@@ -19,10 +19,10 @@ pub fn render(f: &mut Frame, area: Rect, state: &AppState) {
 
 fn render_table(f: &mut Frame, area: Rect, state: &AppState) {
     let mode_str = match state.filter_mode {
-        FilterMode::Strict => "Strict",
-        FilterMode::Loose => "Loose",
+        FilterMode::Strict => "Strict: dev runtimes only",
+        FilterMode::Loose => "Loose: all listening processes",
     };
-    let title = format!(" ccpclean  [{}]  Tab=detail view  F=toggle mode ", mode_str);
+    let title = format!(" ccpclean  [{}]  Tab=detail view  F=switch filter ", mode_str);
 
     let header = Row::new(vec![
         Cell::from("  "),
@@ -84,7 +84,7 @@ fn render_footer(f: &mut Frame, area: Rect, state: &AppState) {
     let msg = if let Some(ref s) = state.status_message {
         s.clone()
     } else {
-        " Space=toggle  A=all  Enter=kill selected  Q=quit".to_string()
+        " Space=select  A=all  Enter=kill selected  F=switch filter  Tab=detail view  Q=quit".to_string()
     };
     let p = Paragraph::new(msg).style(Style::default().fg(Color::DarkGray));
     f.render_widget(p, area);
