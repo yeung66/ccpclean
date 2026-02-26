@@ -50,13 +50,14 @@ ccpclean --no-tui
 
 ```
  ccpclean  [Strict: dev runtimes only]  Tab=detail view  F=switch filter
-┌──────────────────────────────────────────────────────────────────────┐
-│       PID    Name      Ports          Score  Command                │
-│  [x] 12345  node      3000, 3001     ●●●●○  server.js              │
-│  [ ] 23456  python    8000           ●●●○○  manage.py              │
-│  [ ] 34567  node      5173           ●●●●●  vite.js                │
-└──────────────────────────────────────────────────────────────────────┘
- Space=select  A=all  Enter=kill selected  F=switch filter  Tab=detail view  Q=quit
++------+-------+----------+------------+-------+------------+
+|      | PID   | Name     | Ports      | Score | Command    |
++------+-------+----------+------------+-------+------------+
+| [x]  | 12345 | node     | 3000, 3001 | ****- | server.js  |
+| [ ]  | 23456 | python   | 8000       | ***-- | manage.py  |
+| [ ]  | 34567 | node     | 5173       | ***** | vite.js    |
++------+-------+----------+------------+-------+------------+
+ Space=select  A=all  Enter=kill  F=switch filter  Tab=detail  Q=quit
 ```
 
 ### 详情视图（按 Tab 切换）
@@ -64,16 +65,16 @@ ccpclean --no-tui
 逐个浏览进程的完整信息：PID、命令行、运行时长、内存占用、父进程以及可信度评分。
 
 ```
-┌─────────────────────┐┌─────────────────────────────────────────────┐
-│ ▶ node    :3000     ││ PID:        12345                           │
-│   python  :8000     ││ Name:       node                            │
-│   node    :5173     ││ Ports:      3000, 3001                      │
-│                     ││ Command:    node server.js --watch           │
-│                     ││ Started:    2h 13m ago                       │
-│                     ││ Memory:     87.4 MB                          │
-│                     ││ Parent:     bash (PID 11111)                 │
-│                     ││ Confidence: ●●●●○ High                      │
-└─────────────────────┘└─────────────────────────────────────────────┘
++---------------------+----------------------------------------------+
+| > node    :3000     | PID:        12345                            |
+|   python  :8000     | Name:       node                             |
+|   node    :5173     | Ports:      3000, 3001                       |
+|                     | Command:    node server.js --watch            |
+|                     | Started:    2h 13m ago                        |
+|                     | Memory:     87.4 MB                           |
+|                     | Parent:     bash (PID 11111)                  |
+|                     | Confidence: ****- High                        |
++---------------------+----------------------------------------------+
 ```
 
 ## 快捷键
@@ -107,7 +108,7 @@ ccpclean --no-tui
 | 父进程是 shell（bash、zsh、sh、pwsh、claude……） | +20 |
 | 运行时间超过 30 分钟 | +10 |
 
-评分以圆点展示：`●●●●○` = 80/100。
+评分以圆点展示：`****-` = 80/100。
 
 ## 命令行参数
 

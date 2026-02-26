@@ -50,13 +50,14 @@ Select multiple processes with checkboxes, then kill them in batch.
 
 ```
  ccpclean  [Strict: dev runtimes only]  Tab=detail view  F=switch filter
-┌──────────────────────────────────────────────────────────────────────┐
-│       PID    Name      Ports          Score  Command                │
-│  [x] 12345  node      3000, 3001     ●●●●○  server.js              │
-│  [ ] 23456  python    8000           ●●●○○  manage.py              │
-│  [ ] 34567  node      5173           ●●●●●  vite.js                │
-└──────────────────────────────────────────────────────────────────────┘
- Space=select  A=all  Enter=kill selected  F=switch filter  Tab=detail view  Q=quit
++------+-------+----------+------------+-------+------------+
+|      | PID   | Name     | Ports      | Score | Command    |
++------+-------+----------+------------+-------+------------+
+| [x]  | 12345 | node     | 3000, 3001 | ****- | server.js  |
+| [ ]  | 23456 | python   | 8000       | ***-- | manage.py  |
+| [ ]  | 34567 | node     | 5173       | ***** | vite.js    |
++------+-------+----------+------------+-------+------------+
+ Space=select  A=all  Enter=kill  F=switch filter  Tab=detail  Q=quit
 ```
 
 ### Detail View (Tab to switch)
@@ -64,16 +65,16 @@ Select multiple processes with checkboxes, then kill them in batch.
 Browse processes one by one with full details: PID, command, uptime, memory, parent process, and confidence score.
 
 ```
-┌─────────────────────┐┌─────────────────────────────────────────────┐
-│ ▶ node    :3000     ││ PID:        12345                           │
-│   python  :8000     ││ Name:       node                            │
-│   node    :5173     ││ Ports:      3000, 3001                      │
-│                     ││ Command:    node server.js --watch           │
-│                     ││ Started:    2h 13m ago                       │
-│                     ││ Memory:     87.4 MB                          │
-│                     ││ Parent:     bash (PID 11111)                 │
-│                     ││ Confidence: ●●●●○ High                      │
-└─────────────────────┘└─────────────────────────────────────────────┘
++---------------------+----------------------------------------------+
+| > node    :3000     | PID:        12345                            |
+|   python  :8000     | Name:       node                             |
+|   node    :5173     | Ports:      3000, 3001                       |
+|                     | Command:    node server.js --watch            |
+|                     | Started:    2h 13m ago                        |
+|                     | Memory:     87.4 MB                           |
+|                     | Parent:     bash (PID 11111)                  |
+|                     | Confidence: ****- High                        |
++---------------------+----------------------------------------------+
 ```
 
 ## Keybindings
@@ -107,7 +108,7 @@ Each process gets a 0–100 score indicating how likely it is to be an orphaned 
 | Parent process is a shell (bash, zsh, sh, pwsh, claude...) | +20 |
 | Running for more than 30 minutes | +10 |
 
-The score is displayed as filled dots: `●●●●○` = 80/100.
+The score is displayed as filled dots: `****-` = 80/100.
 
 ## CLI Reference
 
