@@ -30,12 +30,18 @@ pub fn kill(pid: u32) -> Result<(), KillError> {
     match sys.process(sysinfo_pid) {
         None => Err(KillError::ProcessNotFound(pid)),
         Some(process) => {
-            if process.kill_with(Signal::Term).is_none() {
-                if !process.kill() {
-                    return Err(KillError::PermissionDenied(pid));
+            match process.kill_with(Signal::Term) {
+                Some(true) => Ok(()),
+                Some(false) => Err(KillError::PermissionDenied(pid)),
+                None => {
+                    // Signal not supported on this platform, use SIGKILL
+                    if process.kill() {
+                        Ok(())
+                    } else {
+                        Err(KillError::PermissionDenied(pid))
+                    }
                 }
             }
-            Ok(())
         }
     }
 }

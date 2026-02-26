@@ -3,7 +3,7 @@ pub mod detail_view;
 pub mod runner;
 
 use crate::process_info::ProcessInfo;
-use crate::filter::FilterMode;
+use crate::filter::{apply_filter, FilterMode};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum View {
@@ -12,6 +12,7 @@ pub enum View {
 }
 
 pub struct AppState {
+    pub all_processes: Vec<ProcessInfo>,
     pub processes: Vec<ProcessInfo>,
     pub selected_index: usize,
     pub checked: Vec<bool>,
@@ -25,6 +26,7 @@ impl AppState {
     pub fn new(processes: Vec<ProcessInfo>) -> Self {
         let len = processes.len();
         Self {
+            all_processes: processes.clone(),
             processes,
             selected_index: 0,
             checked: vec![false; len],
@@ -33,6 +35,19 @@ impl AppState {
             status_message: None,
             should_quit: false,
         }
+    }
+
+    pub fn refilter(&mut self) {
+        self.processes = apply_filter(self.all_processes.clone(), self.filter_mode);
+        self.checked = vec![false; self.processes.len()];
+        self.selected_index = self.selected_index.min(self.processes.len().saturating_sub(1));
+    }
+
+    pub fn remove_processes(&mut self, pids: &[u32]) {
+        self.processes.retain(|p| !pids.contains(&p.pid));
+        self.all_processes.retain(|p| !pids.contains(&p.pid));
+        self.checked = vec![false; self.processes.len()];
+        self.selected_index = self.selected_index.min(self.processes.len().saturating_sub(1));
     }
 
     pub fn move_up(&mut self) {

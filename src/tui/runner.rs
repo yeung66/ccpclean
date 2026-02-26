@@ -62,6 +62,7 @@ fn run_loop<B: ratatui::backend::Backend>(
                             FilterMode::Strict => FilterMode::Loose,
                             FilterMode::Loose => FilterMode::Strict,
                         };
+                        state.refilter();
                     }
                     KeyCode::Enter => {
                         let pids = state.checked_pids();
@@ -76,14 +77,18 @@ fn run_loop<B: ratatui::backend::Backend>(
                             }
                         } else {
                             let mut errors = vec![];
+                            let mut killed_pids = vec![];
                             for pid in pids {
-                                if let Err(e) = killer::kill(pid) {
-                                    errors.push(e.to_string());
+                                match killer::kill(pid) {
+                                    Ok(_) => killed_pids.push(pid),
+                                    Err(e) => errors.push(e.to_string()),
                                 }
+                            }
+                            if !killed_pids.is_empty() {
+                                state.remove_processes(&killed_pids);
                             }
                             if errors.is_empty() {
                                 state.status_message = Some(" Killed selected processes.".to_string());
-                                state.checked.iter_mut().for_each(|c| *c = false);
                             } else {
                                 state.status_message = Some(format!(" Errors: {}", errors.join("; ")));
                             }
@@ -100,8 +105,8 @@ fn run_loop<B: ratatui::backend::Backend>(
 fn handle_kill(state: &mut AppState, pid: u32) {
     match killer::kill(pid) {
         Ok(_) => {
+            state.remove_processes(&[pid]);
             state.status_message = Some(format!(" Killed PID {}.", pid));
-            state.checked.iter_mut().for_each(|c| *c = false);
         }
         Err(e) => {
             state.status_message = Some(format!(" {}", e));
