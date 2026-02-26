@@ -25,13 +25,21 @@
 | macOS x86_64 (Intel) | `ccpclean-macos-x86_64.tar.gz` |
 | macOS aarch64 (Apple Silicon) | `ccpclean-macos-aarch64.tar.gz` |
 
-### 通过 cargo 安装
+### 通过 cargo binstall 安装（推荐）
+
+使用 [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) 直接下载预编译二进制，无需本地编译：
+
+```bash
+cargo binstall ccpclean
+```
+
+### 通过 cargo 从源码编译安装
 
 ```bash
 cargo install ccpclean
 ```
 
-或者从源码构建：
+或者从仓库源码构建：
 
 ```bash
 git clone https://github.com/yeung66/ccpclean.git

@@ -25,13 +25,21 @@ Download the latest binary for your platform from [GitHub Releases](https://gith
 | macOS x86_64 (Intel) | `ccpclean-macos-x86_64.tar.gz` |
 | macOS aarch64 (Apple Silicon) | `ccpclean-macos-aarch64.tar.gz` |
 
-### Via cargo
+### Via cargo binstall (recommended)
+
+Use [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) to download pre-built binaries directly, no local compilation needed:
+
+```bash
+cargo binstall ccpclean
+```
+
+### Via cargo (from source)
 
 ```bash
 cargo install ccpclean
 ```
 
-Or build from source:
+Or build from the repository:
 
 ```bash
 git clone https://github.com/yeung66/ccpclean.git
