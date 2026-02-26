@@ -53,22 +53,20 @@ jobs:
       - name: Prepare artifacts (Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          cp target/${{ matrix.target }}/release/ccpclean ${{ matrix.artifact }}
-          tar czf ${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+          cp target/${{ matrix.target }}/release/ccpclean ccpclean
+          tar czf ${{ matrix.artifact }}.tar.gz ccpclean
 
       - name: Prepare artifacts (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          cp target/${{ matrix.target }}/release/ccpclean.exe ${{ matrix.artifact }}.exe
-          7z a ${{ matrix.artifact }}.zip ${{ matrix.artifact }}.exe
+          cp target/${{ matrix.target }}/release/ccpclean.exe ccpclean.exe
+          7z a ${{ matrix.artifact }}.zip ccpclean.exe
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: |
-            ${{ matrix.artifact }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-            ${{ matrix.artifact }}.${{ matrix.archive }}
+          path: ${{ matrix.artifact }}.${{ matrix.archive }}
 
   release:
     name: Create Release
@@ -85,11 +83,7 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            ccpclean-linux-x86_64
             ccpclean-linux-x86_64.tar.gz
-            ccpclean-windows-x86_64.exe
             ccpclean-windows-x86_64.zip
-            ccpclean-macos-x86_64
             ccpclean-macos-x86_64.tar.gz
-            ccpclean-macos-aarch64
             ccpclean-macos-aarch64.tar.gz
