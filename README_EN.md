@@ -14,6 +14,19 @@ You run `npm run dev` or `python manage.py runserver` inside Claude Code, a term
 
 ## Install
 
+### Pre-built binaries
+
+Download the latest binary for your platform from [GitHub Releases](https://github.com/yeung66/ccpclean/releases/latest), extract it, and place it somewhere in your `PATH`:
+
+| Platform | File |
+|----------|------|
+| Linux x86_64 | `ccpclean-linux-x86_64.tar.gz` |
+| Windows x86_64 | `ccpclean-windows-x86_64.zip` |
+| macOS x86_64 (Intel) | `ccpclean-macos-x86_64.tar.gz` |
+| macOS aarch64 (Apple Silicon) | `ccpclean-macos-aarch64.tar.gz` |
+
+### Via cargo
+
 ```bash
 cargo install ccpclean
 ```

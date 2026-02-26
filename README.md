@@ -14,6 +14,19 @@
 
 ## 安装
 
+### 下载预编译二进制
+
+从 [GitHub Releases](https://github.com/yeung66/ccpclean/releases/latest) 下载对应平台的可执行文件，解压后放到 `PATH` 中即可：
+
+| 平台 | 文件 |
+|------|------|
+| Linux x86_64 | `ccpclean-linux-x86_64.tar.gz` |
+| Windows x86_64 | `ccpclean-windows-x86_64.zip` |
+| macOS x86_64 (Intel) | `ccpclean-macos-x86_64.tar.gz` |
+| macOS aarch64 (Apple Silicon) | `ccpclean-macos-aarch64.tar.gz` |
+
+### 通过 cargo 安装
+
 ```bash
 cargo install ccpclean
 ```
