@@ -65,16 +65,17 @@ Select multiple processes with checkboxes, then kill them in batch.
 Browse processes one by one with full details: PID, command, uptime, memory, parent process, and confidence score.
 
 ```
-+---------------------+----------------------------------------------+
-| > node    :3000     | PID:        12345                            |
-|   python  :8000     | Name:       node                             |
-|   node    :5173     | Ports:      3000, 3001                       |
-|                     | Command:    node server.js --watch            |
-|                     | Started:    2h 13m ago                        |
-|                     | Memory:     87.4 MB                           |
-|                     | Parent:     bash (PID 11111)                  |
-|                     | Confidence: ****- High                        |
-+---------------------+----------------------------------------------+
+ Process List          Process Detail
++--------------------+----------------------------------+
+| > node    :3000    | PID:     12345                   |
+|   python  :8000    | Name:    node                    |
+|   node    :5173    | Ports:   3000, 3001              |
+|                    | Command: node server.js --watch  |
+|                    | Started: 2h 13m ago              |
+|                    | Memory:  87.4 MB                 |
+|                    | Parent:  bash (PID 11111)        |
+|                    | Score:   ****- High              |
++--------------------+----------------------------------+
 ```
 
 ## Keybindings

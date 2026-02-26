@@ -65,16 +65,17 @@ ccpclean --no-tui
 逐个浏览进程的完整信息：PID、命令行、运行时长、内存占用、父进程以及可信度评分。
 
 ```
-+---------------------+----------------------------------------------+
-| > node    :3000     | PID:        12345                            |
-|   python  :8000     | Name:       node                             |
-|   node    :5173     | Ports:      3000, 3001                       |
-|                     | Command:    node server.js --watch            |
-|                     | Started:    2h 13m ago                        |
-|                     | Memory:     87.4 MB                           |
-|                     | Parent:     bash (PID 11111)                  |
-|                     | Confidence: ****- High                        |
-+---------------------+----------------------------------------------+
+ Process List          Process Detail
++--------------------+----------------------------------+
+| > node    :3000    | PID:     12345                   |
+|   python  :8000    | Name:    node                    |
+|   node    :5173    | Ports:   3000, 3001              |
+|                    | Command: node server.js --watch  |
+|                    | Started: 2h 13m ago              |
+|                    | Memory:  87.4 MB                 |
+|                    | Parent:  bash (PID 11111)        |
+|                    | Score:   ****- High              |
++--------------------+----------------------------------+
 ```
 
 ## 快捷键
